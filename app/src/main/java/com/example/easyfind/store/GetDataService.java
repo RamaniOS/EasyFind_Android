@@ -11,12 +11,14 @@ import retrofit2.http.Query;
 
 public interface GetDataService {
 
-    @Headers({"Authorization: Bearer H7_n0PCOUjVZEMUpa1HCeC6LFPts3LXArEZbjpURqiis-40Cu3wQER1SAENdf4t08Td08hODQQMinYB4U97GpJ4vMptJHQdOz1ELeONy7KxyiQiBB1aLyHUJBczOXXYx"})
+    String API_KEY = "H7_n0PCOUjVZEMUpa1HCeC6LFPts3LXArEZbjpURqiis-40Cu3wQER1SAENdf4t08Td08hODQQMinYB4U97GpJ4vMptJHQdOz1ELeONy7KxyiQiBB1aLyHUJBczOXXYx";
+
+    @Headers({"Authorization: Bearer " + API_KEY})
     @GET("businesses/search")
     Call<BaseBusiness> getBaseBusiness(@Query("location") String location,
                                        @Query("limit") int limit);
 
-    @Headers({"Authorization: Bearer H7_n0PCOUjVZEMUpa1HCeC6LFPts3LXArEZbjpURqiis-40Cu3wQER1SAENdf4t08Td08hODQQMinYB4U97GpJ4vMptJHQdOz1ELeONy7KxyiQiBB1aLyHUJBczOXXYx"})
+    @Headers({"Authorization: Bearer " + API_KEY})
     @GET("businesses/{id}")
     Call<Business> getBusinessDetail(@Path("id") String id);
 
