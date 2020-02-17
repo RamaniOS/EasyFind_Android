@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -43,14 +44,16 @@ public class RestDetailActivity extends AppCompatActivity {
 
     private GetDataService apiInterface;
 
+    private Business res;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_detail);
 
-        //initView();
+        initView();
 
-        fetchData();
+
     }
 
     private void initView() {
@@ -60,25 +63,20 @@ public class RestDetailActivity extends AppCompatActivity {
         rDesc = findViewById(R.id.description);
         callTV = findViewById(R.id.callTxt);
         addressTV = findViewById(R.id.address);
-        listView = findViewById(R.id.recycle_list);
+
 
         callBtn = findViewById(R.id.callImgBtn);
         msgBtn = findViewById(R.id.message);
         mapBtn = findViewById(R.id.mapBtn);
 
-        restaurantAdapter = new RestDetailImgAdapter(imgList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
-        listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.HORIZONTAL));
-        listView.setLayoutManager(layoutManager);
-        listView.setAdapter(restaurantAdapter);
+
 
         //
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String noString = no.getText().toString();
-//                String msgMsg = msg.getText().toString();
-//                sendSms(noString, msgMsg);
+
+                dialContactPhone("123123123");
 
             }
         });
@@ -88,7 +86,7 @@ public class RestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                dialContactPhone("123123123");
+                sendSMS("Enquiry!");
             }
         });
 
@@ -98,19 +96,23 @@ public class RestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //
-//                Intent vAct = new Intent(v.getContext(), RestDetailActivity.class);
-//
-//     /           v.getContext().startActivity(vAct);
+                Intent vAct = new Intent(v.getContext(), MapActivity.class);
+
+                vAct.putExtra("lat", res.getCoordinates().getLatitude());
+                vAct.putExtra("long", res.getCoordinates().getLongitude());
+
+                v.getContext().startActivity(vAct);
 
             }
         });
+
+        fetchData();
 
     }
 
     public void sendSMS(String message) {
         SmsManager smsManager = SmsManager.getDefault();
-        //smsManager.sendTextMessage();//TextMessage(readcontacts(context, "john"), null, message, null, null);
-
+        smsManager.sendTextMessage(res.getPhone(), null, message, null, null);
     }
 
     private void dialContactPhone(final String phoneNumber) {
@@ -125,6 +127,25 @@ public class RestDetailActivity extends AppCompatActivity {
             public void onResponse(Call<Business> call, Response<Business> response) {
                 response.isSuccessful();
                 if (response.isSuccessful()) {
+
+                    res = response.body();
+
+                    //  Log.i(String.valueOf(res.getPhotos()), "");
+
+                    //
+                    listView = findViewById(R.id.imgRecyclerView);
+                    restaurantAdapter = new RestDetailImgAdapter(res.getPhotos());
+                    RecyclerView.LayoutManager layM = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
+                    // listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.HORIZONTAL));
+                    listView.setLayoutManager(layM);
+                    listView.setAdapter(restaurantAdapter);
+
+                    //
+                    rName.setText(res.getName());
+                    rPrice.setText(res.getPrice());
+                    rDesc.setText(res.getAlias());
+                    callTV.setText(res.getPhone());
+                    addressTV.setText(res.getLocation().getDisplayAddress().toString());
 
                 } else {
 
