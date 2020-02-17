@@ -1,12 +1,43 @@
-I'm Web Developer( Wordpress & Magento ) having an experience in developing real-time web applications . My projects are based on PHP , Magento , Open-cart, MySQL, jQuery, AJAX, HTML5, CSS3 and XML. My primary role was of a developer. As secondary role, I was given responsibility of handling pro-active pitches to client. Assist in preparation of quote and solution for the projects.I accept challenges and can work independently. For employment prospective I am ability to work hard beyond personal constraints and dedication for committed work.
 
+package com.example.easyfind.activities;
 
-• Ability to handle any kind of PHP projects.
-• Worked on shopping cart, college management system and many more.
-• Prepare reports and other documents and maintenance for the software .
-• Project analysis, requirement and time management.
-• E commerce Development with Magento and Wordpress.
-• Quick learner & highly energetic having a keen aptitude for learning.
-• Development and implementation of Core functionality and support tools.
-• Possesses coordinating,problem solving abilities and skills to work under pressure.
-• Correct errors by making appropriate changes and rechecking the program to ensure that the desired results are produced
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.example.easyfind.R;
+import com.example.easyfind.store.UserDataManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        checkLoginStatus();
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    private void checkLoginStatus() {
+        final boolean isLogin = UserDataManager.getLoggedStatus(getApplicationContext());
+        if (!isLogin) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+    }
+}
