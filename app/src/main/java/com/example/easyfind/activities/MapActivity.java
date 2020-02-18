@@ -205,7 +205,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             .tilt(45)
                             .build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+//
 
                     MarkerOptions markerOptions = new MarkerOptions().position(userLocation)
                             .title("Your Location")
