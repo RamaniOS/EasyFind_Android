@@ -1,5 +1,6 @@
 package com.example.easyfind.ui.settings;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +59,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // dialContactPhone("123123123");
+                sendEmail();
 
             }
         });
@@ -67,7 +69,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // dialContactPhone("123123123");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                startActivity(browserIntent);
 
             }
         });
@@ -84,5 +87,28 @@ public class SettingsFragment extends Fragment {
 
     private void dialContactPhone(final String phoneNumber) {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
+    }
+
+    protected void sendEmail() {
+
+
+        String[] TO = {"someone@gmail.com"};
+        String[] CC = {"xyz@gmail.com"};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+
+
+        } catch (ActivityNotFoundException ex) {
+        }
     }
 }
