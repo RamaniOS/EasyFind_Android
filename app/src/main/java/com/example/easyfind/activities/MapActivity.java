@@ -69,26 +69,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        initView();
+        isDirectionRequested = true;
 
+        Intent intent = getIntent();
+
+        LatLng latLng = new LatLng(intent.getDoubleExtra("lat", 0.00), intent.getDoubleExtra("long", 0.00));
+
+        dest_lat = latLng.latitude;
+        dest_lng = latLng.longitude;
+
+
+        initView();
         getUserLocation();
+
         initMap();
+
 
     }
 
     private void initView() {
-
-        edTxt = findViewById(R.id.searchET);
-
-        //
-        sBtn = findViewById(R.id.searchBtn);
-        sBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                searchClicked();
-            }
-        });
 
         distance = findViewById(R.id.distance);
         duration = findViewById(R.id.duration);
@@ -112,54 +111,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initMap() {
-        isDirectionRequested = true;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mMap);
         mapFragment.getMapAsync(this);
-
-
-        Intent intent = getIntent();
-
-        LatLng latLng = new LatLng(intent.getDoubleExtra("lat", 0.00), intent.getDoubleExtra("long", 0.00));
-
-        dest_lat = latLng.latitude;
-        dest_lng = latLng.longitude;
-        //
-        LatLng lo = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions().position(lo)
-                .title("Your Location")
-                .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.amu_bubble_mask))
-                .snippet("Save Location");
-
-
-        mMap.addMarker(markerOptions);
-
-
-        //
-        setMarker(latLng);
-
-
-        // set directions
-        Object[] data;
-        data = new Object[5];
-        String url = getDirectionUrl();
-        data[0] = mMap;
-        data[1] = url;
-        data[2] = new LatLng(dest_lat, dest_lng);
-        data[3] = distance;
-        data[4] = duration;
-        GetDirections getDirectionsData = new GetDirections();
-        // execute asynchronously
-        getDirectionsData.execute(data);
     }
 
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        mMap.clear();
+
+
 
         mMap.setOnMarkerDragListener(this);
 
@@ -208,6 +175,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10);
         setHomeMarker();
+
     }
 
     private boolean checkPermission() {
@@ -221,7 +189,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     private void setHomeMarker() {
-        Log.i("Noje", "DD");
+
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -244,6 +212,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.amu_bubble_mask))
                             .snippet("You are here");
                     mMap.addMarker(markerOptions);
+
+                    //
+                    setMarker(userLocation);
+
+                    Object[] data;
+                    data = new Object[5];
+                    String url = getDirectionUrl();
+                    data[0] = mMap;
+                    data[1] = url;
+                    data[2] = new LatLng(dest_lat, dest_lng);
+                    data[3] = distance;
+                    data[4] = duration;
+                    GetDirections getDirectionsData = new GetDirections();
+                    // execute asynchronously
+                    getDirectionsData.execute(data);
                 }
             }
         };

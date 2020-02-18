@@ -69,8 +69,8 @@ public class GetDirections extends AsyncTask<Object, String, String> {
             String[] directionList;
             directionList = DataParser.parseDirections(s);
             displayDirections(directionList);
-            distance.setText("Distance: "+distanceModel.getDistance());
-            duration.setText("Duration: "+distanceModel.getDuration());
+            distance.setText("Distance: " + distanceModel.getDistance());
+            duration.setText("Duration: " + distanceModel.getDuration());
         }
     }
 
