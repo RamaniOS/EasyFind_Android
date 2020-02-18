@@ -1,7 +1,6 @@
 package com.example.easyfind.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,16 +21,10 @@ import com.example.easyfind.models.Business;
 import com.example.easyfind.store.APIClient;
 import com.example.easyfind.store.GetDataService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RestDetailActivity extends AppCompatActivity {
 
     private RecyclerView listView;
     private RestDetailImgAdapter restaurantAdapter;
-    private Business detail;
-    private List<String> imgList = new ArrayList<>();
-
     private TextView rName;
     private TextView rPrice;
     private TextView rDesc;
@@ -41,19 +33,17 @@ public class RestDetailActivity extends AppCompatActivity {
     private ImageButton callBtn;
     private ImageButton msgBtn;
     private ImageButton mapBtn;
-
     private GetDataService apiInterface;
-
     private Business res;
+    private String businessId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_detail);
-
+        Intent intent = getIntent();
+        businessId = intent.getStringExtra("id");
         initView();
-
-
     }
 
     private void initView() {
@@ -121,7 +111,7 @@ public class RestDetailActivity extends AppCompatActivity {
 
     private void fetchData() {
         apiInterface = APIClient.getRetrofit().create(GetDataService.class);
-        Call<Business> call = apiInterface.getBusinessDetail("NYa-JphaaB41ElGsb3iawA");
+        Call<Business> call = apiInterface.getBusinessDetail(businessId);
         call.enqueue(new Callback<Business>() {
             @Override
             public void onResponse(Call<Business> call, Response<Business> response) {

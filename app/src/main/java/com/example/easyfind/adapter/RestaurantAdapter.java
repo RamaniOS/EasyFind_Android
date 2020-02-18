@@ -64,13 +64,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pushToDetail(v.getContext());
+                pushToDetail(v.getContext(), business);
             }
         });
     }
 
-    private void pushToDetail(Context context) {
+    private void pushToDetail(Context context, Business business) {
         Intent intent = new Intent(context, RestDetailActivity.class);
+        intent.putExtra("id", business.getId());
         context.startActivity(intent);
     }
 
