@@ -156,4 +156,15 @@
         app:layout_constraintTop_toTopOf="@+id/address"
         app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
+    <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:spi_dotColor="#2196F3"
+        app:spi_dotSelectedColor="#2196F3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

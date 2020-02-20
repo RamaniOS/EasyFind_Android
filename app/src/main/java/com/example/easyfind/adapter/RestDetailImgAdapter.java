@@ -1,5 +1,6 @@
 package com.example.easyfind.adapter;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ public class RestDetailImgAdapter  extends RecyclerView.Adapter<RestDetailImgAda
     public void onBindViewHolder(@NonNull listViewHolder holder, int position) {
         final String imgUrl = imgList.get(position);
         Picasso.get().load(imgUrl).into(holder.imgV);
+        holder.imgV.getLayoutParams().width = getScreenWidth();
+        holder.imgV.requestLayout();
     }
 
     @Override
@@ -36,13 +39,14 @@ public class RestDetailImgAdapter  extends RecyclerView.Adapter<RestDetailImgAda
         return imgList.size();
     }
 
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
     public static class listViewHolder extends RecyclerView.ViewHolder {
-
         public ImageView imgV;
-
         public listViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imgV = itemView.findViewById(R.id.imageView);
         }
     }
