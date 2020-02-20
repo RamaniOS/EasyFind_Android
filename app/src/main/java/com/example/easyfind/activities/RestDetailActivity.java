@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.easyfind.R;
 import com.example.easyfind.adapter.RestDetailImgAdapter;
+import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
 import com.example.easyfind.store.APIClient;
 import com.example.easyfind.store.GetDataService;
@@ -37,7 +38,7 @@ public class RestDetailActivity extends AppCompatActivity {
     private TextView addressTV;
     private ImageButton callBtn;
     private ImageButton msgBtn;
-    private ImageButton mapBtn;
+    private ImageButton mapBtn, favButton;
     private GetDataService apiInterface;
     private Business res;
     private String businessId;
@@ -73,6 +74,7 @@ public class RestDetailActivity extends AppCompatActivity {
         callBtn = findViewById(R.id.callImgBtn);
         msgBtn = findViewById(R.id.message);
         mapBtn = findViewById(R.id.mapBtn);
+        favButton = findViewById(R.id.favButton);
         //
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,5 +142,21 @@ public class RestDetailActivity extends AppCompatActivity {
         rDesc.setText(business.getAlias());
         callTV.setText(business.getPhone());
         addressTV.setText(business.getLocation().getDisplayAddress().toString());
+        boolean isFav = checkIsFav(business);
+        favButton.setImageResource(isFav ? R.drawable.ic_fav_black_24dp : R.drawable.ic_unfav_black_24dp);
+    }
+
+    private boolean checkIsFav(Business business) {
+        BusinessServiceImpl businessService = new BusinessServiceImpl(getApplicationContext());
+        List<Business> businesses = new ArrayList<>();
+        businesses.addAll(businessService.getAll());
+        boolean isFav = false;
+        for (Business dbBusiness: businesses) {
+            if (business.getId().equalsIgnoreCase(dbBusiness.getId())) {
+                isFav = true;
+                break;
+            }
+        }
+        return isFav;
     }
 }

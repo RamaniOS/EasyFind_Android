@@ -53,8 +53,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawablePadding="20dp"
+                    android:fontFamily="@font/arima_madurai_medium"
                     android:hint="User Name"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textSize="16.66sp" />
             <!--android:drawableLeft="@drawable/ic_action_user"-->
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -75,8 +77,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawablePadding="20dp"
+                    android:fontFamily="@font/arima_madurai_medium"
                     android:hint="Password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textSize="16.66sp" />
                     <!--android:drawableLeft="@drawable/ic_action_pass"-->
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -86,11 +90,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
+                android:fontFamily="@font/arima_madurai_bold"
                 android:includeFontPadding="false"
                 android:layoutDirection="inherit"
                 android:switchPadding="30dp"
                 android:text="Remeber me?"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
@@ -102,7 +107,9 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"
                 android:background="#FF9800"
+                android:fontFamily="@font/arima_madurai_black"
                 android:text="Sign In"
+                android:textSize="18sp"
                 app:cornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
