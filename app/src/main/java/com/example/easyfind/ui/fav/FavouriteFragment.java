@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class FavouriteFragment extends Fragment {
     private RestaurantAdapter restaurantAdapter;
     private List<Business> businesses = new ArrayList<>();
     private BusinessServiceImpl businessService;
+    private TextView txtNoItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        txtNoItems = view.findViewById(R.id.txt_noItems);
         businessService = new BusinessServiceImpl(getContext());
         initRecyclerView(view);
         fetchDataFromDB();
@@ -63,6 +66,7 @@ public class FavouriteFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void agentsCount) {
+                txtNoItems.setVisibility(businesses.size() > 0 ? View.GONE : View.VISIBLE);
                 restaurantAdapter.notifyDataSetChanged();
             }
         }.execute();

@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.easyfind.R;
+import com.example.easyfind.activities.LoginActivity;
+import com.example.easyfind.store.UserDataManager;
 
 public class SettingsFragment extends Fragment {
 
@@ -78,11 +80,16 @@ public class SettingsFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // dialContactPhone("123123123");
-
+                performLogout();
             }
         });
+    }
+
+    private void performLogout() {
+        UserDataManager.setLoggedIn(getContext(), false);
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     private void dialContactPhone(final String phoneNumber) {

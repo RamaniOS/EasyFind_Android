@@ -28,9 +28,7 @@ public class RestDetailImgAdapter  extends RecyclerView.Adapter<RestDetailImgAda
     @Override
     public void onBindViewHolder(@NonNull listViewHolder holder, int position) {
         final String imgUrl = imgList.get(position);
-
         Picasso.get().load(imgUrl).into(holder.imgV);
-
     }
 
     @Override

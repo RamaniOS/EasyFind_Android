@@ -11,14 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.easyfind.R;
 import com.example.easyfind.activities.RestDetailActivity;
 import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
+import com.example.easyfind.ui.fav.FavouriteFragment;
 import com.example.easyfind.ui.search.SearchFragment;
 import com.squareup.picasso.Picasso;
 
@@ -29,11 +27,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     private List<Business> businesses;
     private SearchFragment searchFragment;
+    private FavouriteFragment favFragment;
 
     public RestaurantAdapter(List<Business> businesses, Fragment fragment) {
         this.businesses = businesses;
         if (fragment instanceof SearchFragment)
             searchFragment = (SearchFragment) fragment;
+        else
+            favFragment = (FavouriteFragment) fragment;
     }
 
     @NonNull
@@ -98,32 +99,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         business.setFav(!isFav);
         if (isFav) {
             businessService.delete(business);
-            refreshList(businessService);
+            refreshList(businessService, context);
         } else {
             businessService.insertAll(business);
             notifyDataSetChanged();
         }
     }
 
-    private void refreshList(BusinessServiceImpl businessService) {
+    private void refreshList(BusinessServiceImpl businessService, Context context) {
         if (searchFragment != null) {
             notifyDataSetChanged();
             return;
         }
-        businesses.removeAll(businesses);
-        businesses.addAll(businessService.getAll());
-        notifyDataSetChanged();
-    }
-
-    private void replaceFragment (Fragment fragment, View v){
-        String backStateName = fragment.getClass().getName();
-        FragmentManager manager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.replace(R.id.container, fragment);
-            ft.addToBackStack(backStateName);
-            ft.commit();
+        if (favFragment != null) {
+            favFragment.fetchDataFromDB();
         }
     }
 
