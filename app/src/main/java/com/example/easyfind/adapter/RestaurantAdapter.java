@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -99,14 +100,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         business.setFav(!isFav);
         if (isFav) {
             businessService.delete(business);
-            refreshList(businessService, context);
+            refreshList();
+            Toast.makeText(context, "Remove from favourite", Toast.LENGTH_SHORT).show();
         } else {
             businessService.insertAll(business);
             notifyDataSetChanged();
+            Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void refreshList(BusinessServiceImpl businessService, Context context) {
+    private void refreshList() {
         if (searchFragment != null) {
             notifyDataSetChanged();
             return;

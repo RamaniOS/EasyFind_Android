@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easyfind.R;
 import com.example.easyfind.adapter.RestaurantAdapter;
-import com.example.easyfind.database.BusinessService;
 import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
 
